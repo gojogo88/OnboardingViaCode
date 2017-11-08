@@ -19,7 +19,13 @@ class OnboardingPageCell: UICollectionViewCell {
     var page: Page? {
         didSet {
             guard let page = page else { return }
-            imageView.image = UIImage(named: page.imageName)
+            
+            var imageName = page.imageName
+            if UIDevice.current.orientation.isLandscape {
+                imageName += "_landscape"
+            }
+            
+            imageView.image = UIImage(named: imageName)
             
             let color = UIColor(white: 0.2, alpha: 1)
             
@@ -41,9 +47,9 @@ class OnboardingPageCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.backgroundColor = .yellow
-        iv.image = UIImage(named: "Zelda")
+        iv.image = UIImage(named: "page1")
         iv.clipsToBounds = true
         return iv
     }()
@@ -67,13 +73,13 @@ class OnboardingPageCell: UICollectionViewCell {
         addSubview(textView)
         addSubview(lineSeparatorView)
         
-        imageView.anchorToTop(top: topAnchor, left: leadingAnchor, bottom: textView.topAnchor, right: trailingAnchor)
+        imageView.anchorToTop(topAnchor, left: leadingAnchor, bottom: textView.topAnchor, right: trailingAnchor)
         
-        textView.anchorWithConstraintsToTop(top: nil, left: leadingAnchor, bottom: bottomAnchor, right: trailingAnchor, topConstant: 0, leftConstant: 16, bottomConstant: 0, rightConstant: -16)
+        textView.anchorWithConstantsToTop(nil, left: leadingAnchor, bottom: bottomAnchor, right: trailingAnchor, topConstant: 0, leftConstant: 16, bottomConstant: 0, rightConstant: 16)
         
         textView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
     
-        lineSeparatorView.anchorToTop(top: nil, left: leadingAnchor, bottom: textView.topAnchor, right: trailingAnchor)
+        lineSeparatorView.anchorToTop(nil, left: leadingAnchor, bottom: textView.topAnchor, right: trailingAnchor)
         lineSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
